@@ -1,15 +1,14 @@
 // node 03-files-in-folder
 
 const fs = require('fs');
-const { join } = require('path');
 const path = require('path');
 
-const pathToFile = join(__dirname, 'secret-folder');
+const pathToFile = path.join(__dirname, 'secret-folder');
 
 fs.readdir(pathToFile, (err, objects) => {
   if(err) throw err;
   objects.forEach(obj => {
-    const baseNameWithPath = join(pathToFile, obj);
+    const baseNameWithPath = path.join(pathToFile, obj);
     fs.stat(baseNameWithPath, (err, stats) => {
       if(err) throw err;
       if(!stats.isFile()) return;
