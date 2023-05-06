@@ -22,9 +22,9 @@ rl.on('line', (input) => {
   const strInput = input.toString();
   if (strInput === 'exit') exitDialog();
 
-  console.log('Do write, don\'t stop (or input \'exit\')');
-
   writeStream.write(`${strInput}\n`);
+
+  console.log('Do write, don\'t stop (or input \'exit\')');
 });
 
 rl.on('SIGINT', () => {

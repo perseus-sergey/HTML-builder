@@ -10,30 +10,6 @@ const bundleExtention = path.extname(cssBundleFilePath);
 
 const writeStream = fs.createWriteStream(cssBundleFilePath);
 
-function makeCssBundle() {
-  fs.writeFile(cssBundleFilePath, '', (err) => {
-    if (err) throw err;
-  });
-
-  fs.readdir(pathToBaseFolder, { withFileTypes: true }, (err, files) => {
-    if (err) throw err;
-
-    files.forEach((file) => {
-      const baseNameWithPath = path.join(pathToBaseFolder, file.name);
-
-      if (!file.isFile() || path.extname(baseNameWithPath) !== bundleExtention)
-        return;
-
-      fs.readFile(baseNameWithPath, 'utf-8', (err, data) => {
-        if (err) throw err;
-        fs.appendFile(cssBundleFilePath, data, (err) => {
-          if (err) throw err;
-        });
-      });
-    });
-  });
-}
-
 function makeCssBundleStream() {
   fs.writeFile(cssBundleFilePath, '', (err) => {
     if (err) throw err;
@@ -60,4 +36,3 @@ function makeCssBundleStream() {
   });
 }
 makeCssBundleStream();
-// makeCssBundle();
