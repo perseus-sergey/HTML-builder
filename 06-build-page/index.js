@@ -1,20 +1,20 @@
 // node 06-build-page
 
 class BuildDist {
-  fs = require("fs");
-  path = require("path");
+  fs = require('fs');
+  path = require('path');
 
-  distDir = "project-dist";
-  assetsDir = "assets";
+  distDir = 'project-dist';
+  assetsDir = 'assets';
   pathToDistDir = this.path.join(__dirname, this.distDir);
   pathToScrAssetsDir = this.path.join(__dirname, this.assetsDir);
-  pathToComponentsDir = this.path.join(__dirname, "components");
-  templateHtmlFilePath = this.path.join(__dirname, "template.html");
-  distHtmlFile = this.path.join(this.pathToDistDir, "index.html");
-  pathToStylesDir = this.path.join(__dirname, "styles");
-  cssBundleFilePath = this.path.join(this.pathToDistDir, "style.css");
+  pathToComponentsDir = this.path.join(__dirname, 'components');
+  templateHtmlFilePath = this.path.join(__dirname, 'template.html');
+  distHtmlFile = this.path.join(this.pathToDistDir, 'index.html');
+  pathToStylesDir = this.path.join(__dirname, 'styles');
+  cssBundleFilePath = this.path.join(this.pathToDistDir, 'style.css');
   bundleExtention = this.path.extname(this.cssBundleFilePath);
-  htmlComponentsExtention = ".html";
+  htmlComponentsExtention = '.html';
 
   constructor() {
     this.start();
@@ -31,8 +31,8 @@ class BuildDist {
     try {
       await this.fs.promises.rm(this.pathToDistDir, { recursive: true, force: true });
       await this.fs.promises.mkdir(this.pathToDistDir, { recursive: true });
-      this.fs.writeFile(this.cssBundleFilePath, "", err => {if(err) throw err;});
-      this.fs.writeFile(this.distHtmlFile, "", err => {if(err) throw err;});
+      this.fs.writeFile(this.cssBundleFilePath, '', err => {if(err) throw err;});
+      this.fs.writeFile(this.distHtmlFile, '', err => {if(err) throw err;});
     } catch (err) {
       console.error(err);
     }
@@ -40,10 +40,10 @@ class BuildDist {
 
   async makeHtml() {
     try {
-      await this.fs.promises.writeFile(this.cssBundleFilePath, "");
+      await this.fs.promises.writeFile(this.cssBundleFilePath, '');
       let tempHtml = await this.fs.promises.readFile(
         this.templateHtmlFilePath,
-        "utf-8"
+        'utf-8'
       );
 
       const objects = await this.fs.promises.readdir(this.pathToComponentsDir, {
@@ -53,12 +53,12 @@ class BuildDist {
       for (const obj of objects) {
         const srcObjPath = this.path.join(this.pathToComponentsDir, obj.name);
         if (this.path.extname(srcObjPath) === this.htmlComponentsExtention) {
-          const data = await this.fs.promises.readFile(srcObjPath, "utf-8");
+          const data = await this.fs.promises.readFile(srcObjPath, 'utf-8');
 
-          const componName = obj.name.split(".html")[0];
+          const componName = obj.name.split('.html')[0];
 
           // console.log('Temp Html : ', tempHtml);
-          const regex = new RegExp(`{{\\s?${componName}\\s?}}`, "gi");
+          const regex = new RegExp(`{{\\s?${componName}\\s?}}`, 'gi');
           tempHtml = tempHtml.replace(regex, data);
         }
       }
@@ -83,7 +83,7 @@ class BuildDist {
           this.makeCssBundle(srcObjPath);
         } else {
           if (this.path.extname(srcObjPath) === this.bundleExtention) {
-            this.fs.readFile(srcObjPath, "utf-8", (err, data) => {
+            this.fs.readFile(srcObjPath, 'utf-8', (err, data) => {
               if (err) throw err;
               this.fs.appendFile(this.cssBundleFilePath, `${data}\n`, (err) => {
                 if (err) throw err;
